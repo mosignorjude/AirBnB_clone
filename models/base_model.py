@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import uuid
 import datetime
+from models.__init__ import storage
 
 """Defines all common attributes/methods for other classes."""
 
@@ -13,10 +14,21 @@ class BaseModel():
         updated_at (datetime): Current datetime an instance was updated.
     """
 
-    def __init__(self):
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = datetime.datetime.now()
+    def __init__(self, *args, **kwargs):
+        """initializes new instance"""
+        if kwargs:
+            for key, value in kwargs.items():
+                if key != "__class__":
+                    if key == "created_at" or key == "updated_at":
+                        parsed_time = datetime.datetime.fromisoformat(value)
+                        setattr(self, key, parsed_time)
+                    else:
+                        setattr(self, key, value)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = datetime.datetime.now()
+            storage.new(self)
 
     def __str__(self):
         """ Returns printable representation of the model"""
@@ -27,6 +39,7 @@ class BaseModel():
         with current date and time
         """
         self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         """ Returns a dictionary containing all key/value of __dict__
