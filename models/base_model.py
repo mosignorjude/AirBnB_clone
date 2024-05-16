@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import uuid
 import datetime
-from models.__init__ import storage
+from models import storage
 
 """Defines all common attributes/methods for other classes."""
 
@@ -51,3 +51,8 @@ class BaseModel():
         attr_dict['updated_at'] = self.updated_at.isoformat()
 
         return attr_dict
+
+    @classmethod
+    def from_dict(cls, obj_dict):
+        """ Creates an instance from a dictionary """
+        return cls(**obj_dict)

@@ -43,29 +43,31 @@ class HBNBCommand(cmd.Cmd):
         class name and id\n
         """
         all_objects = storage.all()
-        for key in all_objects:
-            obj_token = key.split('.')
-            obj_name = obj_token[0]
-            if line_arg:
-                token = line_arg.split()
-                print(len(token))
-                if len(token) == 2:
-                    if not token[0]:
-                        print("** class name missing **")
-                    if not token[1]:
-                        print("** instance id missing **")
-                    class_name = token[1]
-                    class_id = token[2]
-                    class_key = f"{class_name}.{class_id}"
+        if line_arg:
+            token = line_arg.split()
+            if len(token) == 1:
+                print("*** instance is missing ***")
+                return
+            elif len(token) == 2:
+                class_name = token[0]
+                obj_id = token[1]
+                class_key = f"{class_name}.{obj_id}"
+
+                if class_key in all_objects.keys():
+                    obj = all_objects[class_key]
+                    print(obj)
+                else:
+                    print("** no instance found **")
+                    return
+                for obj_key in all_objects:
+                    obj_token = obj_key.split('.')
+                    obj_name = obj_token[0]
                     if obj_name == class_name:
-                        if class_key == key:
-                            print(obj_name.__str__())
-                        else:
-                            print("** no instance found **")
+                        pass
                     else:
                         print("** class doesn't exist **")
-            else:
-                print("command out of range")
+        else:
+            print("** class name missing ***")
 
 
 def run_interactive_mode():
