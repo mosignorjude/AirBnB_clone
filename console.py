@@ -56,6 +56,9 @@ class HBNBCommand(cmd.Cmd):
                 if class_key in all_objects.keys():
                     obj = all_objects[class_key]
                     print(obj)
+                    storage.__objects = all_objects
+                    storage.save()
+
                 else:
                     print("** no instance found **")
                     return
@@ -68,6 +71,51 @@ class HBNBCommand(cmd.Cmd):
                         print("** class doesn't exist **")
         else:
             print("** class name missing ***")
+
+    def do_destroy(self, line_arg):
+        """  Deletes an instance based on the class name and id """
+
+        all_objects = storage.all()
+        if line_arg:
+            token = line_arg.split()
+            if len(token) == 1:
+                print("*** instance id missing ***")
+                return
+            elif len(token) == 2:
+                class_name = token[0]
+                obj_id = token[1]
+                class_key = f"{class_name}.{obj_id}"
+
+                if class_key in all_objects.keys():
+                    del all_objects[class_key]
+                else:
+                    print("** no instance found **")
+                    return
+                for obj_key in all_objects:
+                    obj_token = obj_key.split('.')
+                    obj_name = obj_token[0]
+                    if obj_name == class_name:
+                        pass
+                    else:
+                        print("** class doesn't exist **")
+        else:
+            print("** class name missing **")
+
+    def do_all(self, line_arg):
+        """  Prints all string representation of all instances based or not on the class name """
+        all_objects = storage.all()
+        if line_arg:
+            token = line_arg.split()
+            if len(token) == 1:
+                class_name = token[0]
+                for obj_key, obj in all_objects.items():
+                    if obj_key.startswith(class_name):
+                        print(obj)
+                    else:
+                        print("** class doesn't exist **")
+                        return
+        else:
+            print(all_objects)
 
 
 def run_interactive_mode():
