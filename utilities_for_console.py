@@ -35,14 +35,40 @@ def check_class_name(classname, all_object):
         return False
 
 
-        # def get_available_classes():
-        #     """ Returns a dictionary of available classes """
-        #
-CLASSES = {
-    "BaseModel": BaseModel,
-    "User": User,
-    "Place": Place,
-    "State": State,
-    "Review": Review,
-    "City": City,
-}
+def check_object(args, all_objects):
+    """ Checks if object exists based on class name and id.
+    Return:
+        returns True if object exists else False.
+    """
+    if args and len(args) > 1:
+        class_name = args[0]
+        obj_id = args[1]
+        class_key = f"{class_name}.{obj_id}"
+        if class_key in all_objects:
+            return True
+        else:
+            return False
+
+
+def update_obj_attr(args, all_objects, storage):
+    """ Update the attribute of an object
+    Return:
+        returns 0 or 1
+    """
+    if args and len(args) == 4:
+        class_name = args[0]
+        obj_id = args[1]
+        attr_name = args[2]
+        attr_value = args[3]
+        class_key = f"{class_name}.{obj_id}"
+        if class_key in all_objects.keys():
+            obj = all_objects[class_key]
+            if attr_value.startswith('"'):
+                attr_value = args[3].replace('"', '')
+                setattr(obj, attr_name, attr_value)
+                all_objects[class_key] = obj
+                storage.__objects = all_objects
+                storage.save()
+                return 0
+            else:
+                return 1
