@@ -1,10 +1,15 @@
 #!/usr/bin/python3
+"""
+
+"""
 import json
 # from models.user import User
 
 
 class FileStorage():
-    """ Represents a file storage """
+    """
+    serializes instances to a JSON file and deserializes JSON file to instances
+    """
 
     def __init__(self):
         """ initializes a class attributes """

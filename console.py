@@ -1,16 +1,20 @@
 #!/usr/bin/python3
+"""
+This file defines the console class
+which will serve as basis of the entire project
+"""
 import cmd
 import sys
 from utilities_for_console import *
 from models import storage
-from models.base_model import BaseModel
-
-
-""" Defines the command class of the console """
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Represents the console """
+    """
+    The console - A simple command interpreter that manages objects
+    for the Airbnb project.
+    All in interaction with the system are done via this class.
+    """
 
     prompt = "(hbnb) "
 
@@ -28,7 +32,12 @@ class HBNBCommand(cmd.Cmd):
     # -------------------------------------------------------------------------
 
     def do_create(self, line_arg):
-        """ Creates a new instance of BaseModel """
+        """
+        Creates a new instance of BaseModel, saves it (to the JSON file)
+        and prints the id .
+        Usage:
+            $ create BaseModel
+        """
         if line_arg:
             if len(line_arg.split()) >= 1:
                 class_name = line_arg
@@ -47,8 +56,11 @@ class HBNBCommand(cmd.Cmd):
     # -------------------------------------------------------------------------
 
     def do_show(self, line_arg):
-        """ Prints the string representation of an instance based on
-        class name and id\n
+        """
+        Prints the string representation of an instance based on
+        class name and id.
+        Usage:
+             $ show BaseModel 1234-1234-1234
         """
         if not line_arg:
             print("** class name missing ***")
@@ -78,7 +90,11 @@ class HBNBCommand(cmd.Cmd):
     # -------------------------------------------------------------------------
 
     def do_destroy(self, line_arg):
-        """  Deletes an instance based on the class name and id """
+        """
+        Deletes an instance based on the class name and id
+        Usage:
+            $ destroy BaseModel 1234-1234-1234
+        """
 
         if not line_arg:
             print("** class name missing **")
@@ -108,8 +124,13 @@ class HBNBCommand(cmd.Cmd):
     # -------------------------------------------------------------------------
 
     def do_all(self, line_arg):
-        """  Prints all string representation of all instances
+        """
+        Prints all string representation of all instances
         based or not on the class name
+        Usage:
+            $ all BaseModel
+            or
+            $ all
         """
         all_objects = storage.all()
         if line_arg:
@@ -130,8 +151,11 @@ class HBNBCommand(cmd.Cmd):
     # -------------------------------------------------------------------------
 
     def do_update(self, line_arg):
-        """  Updates an instance based on the class name and id
+        """
+        Updates an instance based on the class name and id
         by adding or updating attribute
+        Usage:
+            $ update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         if not line_arg:
             print("** class name missing ***")
