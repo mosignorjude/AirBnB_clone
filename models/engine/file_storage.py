@@ -8,32 +8,32 @@ import json
 
 class FileStorage():
     """
-    serializes instances to a JSON file and deserializes JSON file to instances
+    serializes instances to a JSON file
+    and deserializes JSON file to instances
     """
+    __file_path = "file.json"
+    __objects = {}
 
     def __init__(self):
-        """ initializes a class attributes """
-
-        self.__file_path = "file.json"
-        self.__objects = {}
+        """ class contructor """
 
     def all(self):
         """ Returns __objects """
-        return self.__objects
+        return FileStorage.__objects
 
     def new(self, obj):
         """ sets the object dictionary """
         if obj:
             key = f"{obj.__class__.__name__}.{obj.id}"
             # value = obj.to_dict()
-            self.__objects[key] = obj
+            FileStorage.__objects[key] = obj
 
     def save(self):
         """ Serializes objects to JSON file path """
         # from models.class_module import get_all_class
         json_data = {}
-        if self.__objects:
-            for key, obj in self.__objects.items():
+        if FileStorage.__objects:
+            for key, obj in FileStorage.__objects.items():
                 json_data[key] = obj.to_dict()
 
         with open(self.__file_path, 'w') as file:
@@ -51,7 +51,7 @@ class FileStorage():
                 for key, obj_dict in dict_from_json.items():
                     obj = eval(obj_dict["__class__"])(
                         **obj_dict)  # get class from its name
-                    self.__objects[key] = obj  # Recreate class
+                    FileStorage.__objects[key] = obj  # Recreate class
             except FileNotFoundError:
                 pass
         else:

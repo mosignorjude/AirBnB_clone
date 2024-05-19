@@ -5,6 +5,7 @@ which will serve as basis of the entire project
 """
 import cmd
 import sys
+from models.engine.file_storage import FileStorage
 from utilities_for_console import *
 from models import storage
 
@@ -115,7 +116,7 @@ class HBNBCommand(cmd.Cmd):
 
             if class_key in all_objects.keys():
                 del all_objects[class_key]
-                storage.__objects = all_objects
+                FileStorage.__objects = all_objects
                 storage.save()
             else:
                 print("** no instance found **")

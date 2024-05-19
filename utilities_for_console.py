@@ -1,13 +1,20 @@
 #!/usr/bin/python3
 
-""" These are functions that power the console class under the hood """
-
+"""
+These are functions that power the console class under the hood
+They perform the basic task in tasks in the console.
+"""
 
 from models.class_module import BaseModel, User, Place, State, Review, City
 
 
 def create_object(class_name):
-    """ creates an object of class_name """
+    """ creates an object of class_name
+    Args:
+        class_name (str): class name of the object to be created.
+    Return:
+        object of class_name.
+    """
     if class_name:
         if class_name == "BaseModel":
             return BaseModel()
@@ -26,7 +33,13 @@ def create_object(class_name):
 
 
 def check_class_name(classname, all_object):
-    """ Returns True if class name exist in the list """
+    """ Returns True if class name exist in the list
+    Args:
+        classname (str): class name to search for.
+        all_object (FileStorage): List of all existing objects (dictionary)
+    Return:
+        True if the class name exist otherwise False
+    """
     if classname and all_object:
         for key, value in all_object.items():
             if key.startswith(f"{classname}."):
@@ -37,6 +50,9 @@ def check_class_name(classname, all_object):
 
 def check_object(args, all_objects):
     """ Checks if object exists based on class name and id.
+    Args:
+        args (str): list of strings of arguments passed to the console.
+        all_objects (FileStorage): List of all existing objects (dictionary)
     Return:
         returns True if object exists else False.
     """
@@ -52,6 +68,10 @@ def check_object(args, all_objects):
 
 def update_obj_attr(args, all_objects, storage):
     """ Update the attribute of an object
+    Args:
+        args (str): List of strings of arguments
+        all_objects (FileStorage): List of all existing objects (dictionary)
+        storage (FileStorage): Updates and stores the changes.
     Return:
         returns 0 or 1
     """
