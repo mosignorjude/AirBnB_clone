@@ -80,24 +80,24 @@ def update_obj_attr(args, all_objects, storage):
         obj_id = args[1]
         if obj_id.startswith('"'):
             obj_id = args[1].replace('"', '')
-            print(obj_id)
         attr_name = args[2]
         if attr_name.startswith('"'):
             attr_name = args[2].replace('"', '')
         attr_value = args[3]
+        if attr_value.startswith('"'):
+            attr_value = args[3].replace('"', '')
+
         class_key = f"{class_name}.{obj_id}"
         if class_key in all_objects.keys():
             obj = all_objects[class_key]
-            if attr_value.startswith('"'):
-                attr_value = args[3].replace('"', '')
-                setattr(obj, attr_name, attr_value)
-                obj.save()
-                all_objects[class_key] = obj
-                storage.__objects = all_objects
-                storage.save()
-                return 0
-            else:
-                return 1
+            setattr(obj, attr_name, attr_value)
+            obj.save()
+            all_objects[class_key] = obj
+            storage.__objects = all_objects
+            storage.save()
+            return 0
+        else:
+            return 1
 
 
 def extract_attr(string):

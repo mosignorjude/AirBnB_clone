@@ -256,12 +256,15 @@ class HBNBCommand(cmd.Cmd):
             method = args[1]
             if obj_class in classes:
                 obj_attr = extract_attr(method)
+                if obj_attr.startswith('"'):
+                    obj_attr = obj_attr.replace('"', '')
                 if method.startswith("show(") and method[-1:] == ")":
                     self.do_show(f"{obj_class} {obj_attr}")
                 elif method.startswith("destroy(") and method[-1:] == ")":
                     self.do_destroy(f"{obj_class} {obj_attr}")
                 elif method.startswith("update(") and method[-1:] == ")":
                     attr = obj_attr.split(", ")
+                    print(attr)
                     id = attr[0]
                     attribute = attr[1]
                     value = attr[2]
