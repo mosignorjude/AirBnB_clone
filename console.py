@@ -264,7 +264,6 @@ class HBNBCommand(cmd.Cmd):
                     self.do_destroy(f"{obj_class} {obj_attr}")
                 elif method.startswith("update(") and method[-1:] == ")":
                     attr = obj_attr.split(", ")
-                    print(attr)
                     id = attr[0]
                     attribute = attr[1]
                     value = attr[2]
