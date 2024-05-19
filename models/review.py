@@ -1,8 +1,8 @@
 #!/usr/bin/python3
-from models.base_model import BaseModel
 """ Defines the review class.
     Inherits from BaseModel class
 """
+from models.base_model import BaseModel
 
 
 class Review(BaseModel):
