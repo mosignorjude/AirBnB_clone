@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 """
-
+This file defines the file storage system for the project.
 """
 import json
-# from models.user import User
 
 
 class FileStorage():
@@ -16,6 +15,7 @@ class FileStorage():
 
     def __init__(self):
         """ class contructor """
+        pass
 
     def all(self):
         """ Returns __objects """

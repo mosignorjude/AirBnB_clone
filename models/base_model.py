@@ -1,13 +1,14 @@
 #!/usr/bin/python3
+""" Defines the Base Model of the Airbnb project.
+    Other classes inherits from this Class.
+"""
 import uuid
 import datetime
 from models import storage
 
-"""Defines all common attributes/methods for other classes."""
-
 
 class BaseModel():
-    """Represents a model
+    """Represents Airbnb model
     Attributes:
         id (str): unique ID for each instance.
         created_at (datetime): Current datetime an instance was created.
@@ -15,7 +16,7 @@ class BaseModel():
     """
 
     def __init__(self, *args, **kwargs):
-        """initializes new instance"""
+        """class constructor"""
         if kwargs:
             for key, value in kwargs.items():
                 if key != "__class__":
