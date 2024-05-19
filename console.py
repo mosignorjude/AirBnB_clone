@@ -212,8 +212,8 @@ class HBNBCommand(cmd.Cmd):
                 self.all_instances(arg)
             elif method == "count()":
                 self.count_instances(arg)
-            elif method.startswith("show(") or method.startswith("destroy("):
-                self.show_or_destroy_instances(arg)
+            elif method.startswith("show(") or method.startswith("destroy(") or method.startswith("update("):
+                self.show_destroy_update_instances(arg)
 
     def all_instances(self, arg):
         """
@@ -248,18 +248,25 @@ class HBNBCommand(cmd.Cmd):
                         count += 1
                 print(count)
 
-    def show_or_destroy_instances(self, arg):
+    def show_destroy_update_instances(self, arg):
         """ retrieve an instance based on its ID: <class name>.show(<id>) """
         if arg:
             args = arg.split('.')
             obj_class = args[0]
             method = args[1]
             if obj_class in classes:
-                obj_id = extract_attr(method)
+                obj_attr = extract_attr(method)
                 if method.startswith("show(") and method[-1:] == ")":
-                    self.do_show(f"{obj_class} {obj_id}")
+                    self.do_show(f"{obj_class} {obj_attr}")
                 elif method.startswith("destroy(") and method[-1:] == ")":
-                    self.do_destroy(f"{obj_class} {obj_id}")
+                    self.do_destroy(f"{obj_class} {obj_attr}")
+                elif method.startswith("update(") and method[-1:] == ")":
+                    attr = obj_attr.split(", ")
+                    id = attr[0]
+                    attribute = attr[1]
+                    value = attr[2]
+                    print(f"id: {id}, attribute: {attribute}, value: {value}")
+                    self.do_update(f"{obj_class} {id} {attribute} {value}")
 
 
 def run_interactive_mode():
