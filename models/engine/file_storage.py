@@ -12,6 +12,11 @@ class FileStorage():
     """
     __file_path = "file.json"
     __objects = {}
+    models = (
+        "BaseModel", "User", "Place",
+        "Review", "State", "City",
+        "Amenity"
+    )
 
     def __init__(self):
         """ class contructor """

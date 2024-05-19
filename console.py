@@ -9,6 +9,9 @@ from models.engine.file_storage import FileStorage
 from utilities_for_console import *
 from models import storage
 
+# Global variable of existing classes.
+classes = storage.models
+
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -185,6 +188,43 @@ class HBNBCommand(cmd.Cmd):
                 print("** no instance found **")
 
     # -------------------------------------------------------------------------
+
+    def default(self, arg):
+        """ overides the default method to handle unrecognised commands """
+        if arg:
+            args = arg.split('.')
+            if '.' in arg and args[0] in classes and args[1][-1:] == ")":
+                return self.handle_unregistered_command(arg)
+
+        return cmd.Cmd.default(self, arg)
+
+    def handle_unregistered_command(self, arg):
+        """ handles other methods """
+        if arg:
+            args = arg.split('.')
+            obj_class = args[0]
+            method = args[1]
+            if method == "all()":
+                self.all_instances(arg)
+
+    def all_instances(self, arg):
+        """
+         retrieve all instances of a class by using: <class name>.all()
+        """
+        if arg:
+            token = arg.split('.')
+            obj_class = token[0]
+            method = token[1]
+            if obj_class in classes:
+                if method == "all()":
+                    self.do_all(f"{obj_class}")
+
+                else:
+                    print("** Invalid Method **")
+                    return
+            else:
+                print("** class doesn't exist **")
+                return
 
 
 def run_interactive_mode():
