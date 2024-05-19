@@ -4,7 +4,7 @@
 These are functions that power the console class under the hood
 They perform the basic task in tasks in the console.
 """
-
+import datetime
 from models.class_module import BaseModel, User, Place, State, Review, City
 
 
@@ -86,9 +86,21 @@ def update_obj_attr(args, all_objects, storage):
             if attr_value.startswith('"'):
                 attr_value = args[3].replace('"', '')
                 setattr(obj, attr_name, attr_value)
+                obj.save()
                 all_objects[class_key] = obj
                 storage.__objects = all_objects
                 storage.save()
                 return 0
             else:
                 return 1
+
+
+def extract_attr(string):
+    """ extract atrribute """
+    content = ""
+    start_index = string.find(
+        "(") + 1  # Find the opening parenthesis and move one position ahead
+    end_index = string.find(")")        # Find the closing parenthesis
+    if start_index != -1 and end_index != -1:
+        content = string[start_index:end_index]
+    return content

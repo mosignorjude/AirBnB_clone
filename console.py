@@ -5,12 +5,15 @@ which will serve as basis of the entire project
 """
 import cmd
 import sys
+import re
 from models.engine.file_storage import FileStorage
 from utilities_for_console import *
 from models import storage
 
 # Global variable of existing classes.
 classes = storage.models
+# Global variable of regex pattern
+pattern = r"^[Aa-Zz]\w*\.\((\w|-)*\)"
 
 
 class HBNBCommand(cmd.Cmd):
@@ -194,6 +197,7 @@ class HBNBCommand(cmd.Cmd):
         if arg:
             args = arg.split('.')
             if '.' in arg and args[0] in classes and args[1][-1:] == ")":
+                # if args[0] in classes and re.match(pattern, arg[1]):
                 return self.handle_unregistered_command(arg)
 
         return cmd.Cmd.default(self, arg)
@@ -206,6 +210,10 @@ class HBNBCommand(cmd.Cmd):
             method = args[1]
             if method == "all()":
                 self.all_instances(arg)
+            elif method == "count()":
+                self.count_instances(arg)
+            elif method.startswith("show(") or method.startswith("destroy("):
+                self.show_or_destroy_instances(arg)
 
     def all_instances(self, arg):
         """
@@ -225,6 +233,33 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
                 return
+
+    def count_instances(self, arg):
+        """ retrieve the number of instances of a class: <class name>.count() """
+        if arg:
+            count = 0
+            args = arg.split('.')
+            obj_class = args[0]
+            method = args[1]
+            if obj_class in classes and method == "count()":
+                all_object = storage.all()
+                for key, obj in all_object.items():
+                    if key.startswith(obj_class):
+                        count += 1
+                print(count)
+
+    def show_or_destroy_instances(self, arg):
+        """ retrieve an instance based on its ID: <class name>.show(<id>) """
+        if arg:
+            args = arg.split('.')
+            obj_class = args[0]
+            method = args[1]
+            if obj_class in classes:
+                obj_id = extract_attr(method)
+                if method.startswith("show(") and method[-1:] == ")":
+                    self.do_show(f"{obj_class} {obj_id}")
+                elif method.startswith("destroy(") and method[-1:] == ")":
+                    self.do_destroy(f"{obj_class} {obj_id}")
 
 
 def run_interactive_mode():
