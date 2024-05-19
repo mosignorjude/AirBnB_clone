@@ -265,7 +265,6 @@ class HBNBCommand(cmd.Cmd):
                     id = attr[0]
                     attribute = attr[1]
                     value = attr[2]
-                    print(f"id: {id}, attribute: {attribute}, value: {value}")
                     self.do_update(f"{obj_class} {id} {attribute} {value}")
 
 

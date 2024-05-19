@@ -78,7 +78,12 @@ def update_obj_attr(args, all_objects, storage):
     if args and len(args) == 4:
         class_name = args[0]
         obj_id = args[1]
+        if obj_id.startswith('"'):
+            obj_id = args[1].replace('"', '')
+            print(obj_id)
         attr_name = args[2]
+        if attr_name.startswith('"'):
+            attr_name = args[2].replace('"', '')
         attr_value = args[3]
         class_key = f"{class_name}.{obj_id}"
         if class_key in all_objects.keys():
