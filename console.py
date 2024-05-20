@@ -46,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
             $ create BaseModel
         """
         if line_arg:
-            if len(line_arg.split()) >= 1:
+            if len(line_arg.split()) == 1:
                 class_name = line_arg
                 new_model = create_object(class_name)
                 if new_model:
@@ -56,6 +56,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
                     return
             else:
+                print("** Too many argument for create **)
                 return
         else:
             print("** class name missing **")
@@ -77,13 +78,12 @@ class HBNBCommand(cmd.Cmd):
         args = line_arg.split()
         if len(args) < 2:
             class_name = args[0]
-            if class_name:
-                if check_class_name(class_name, all_objects) == False:
-                    print("** class doesn't exist **")
-                    return
-                else:
-                    print("*** instance id missing ***")
-        else:
+            if class_name in classes:
+                print("** instance id missing **")
+                return
+            else:
+                print("*** class doesn't exist ***")
+        elif len(args) == 2:
             class_name = args[0]
             obj_id = args[1]
             class_key = f"{class_name}.{obj_id}"
@@ -93,6 +93,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
                 return
+        else:
+            print("** Too many argument for show")
+            return
 
     # -------------------------------------------------------------------------
 
@@ -115,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("*** instance id missing ***")
                 return
-        elif len(args) >= 2:
+        elif len(args) == 2:
             class_name = args[0]
             obj_id = args[1]
             class_key = f"{class_name}.{obj_id}"
@@ -127,6 +130,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** no instance found **")
                 return
+        else:
+            print("** Too many argument for destroy **")
+            return
 
     # -------------------------------------------------------------------------
 
@@ -142,14 +148,17 @@ class HBNBCommand(cmd.Cmd):
         all_objects = storage.all()
         if line_arg:
             args = line_arg.split()
-            if len(args) >= 1:
+            if len(args) == 1:
                 class_name = args[0]
-                if check_class_name(class_name, all_objects) == False:
+                if not class_name in classes:
                     print("** class doesn't exist **")
                     return
                 for obj_key, obj in all_objects.items():
                     if obj_key.startswith(class_name):
                         print(obj)
+            else:
+                print("** Too many argument for all **")
+                return
 
         else:
             for key in all_objects:
@@ -170,7 +179,7 @@ class HBNBCommand(cmd.Cmd):
         all_objects = storage.all()
         args = line_arg.split()
         if len(args) < 2:
-            if check_class_name(args[0], all_objects) == False:
+            if not args[0] in classes:
                 print("** class doesn't exist **")
                 return
             else:
@@ -186,9 +195,12 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) < 4:
             print("** value missing **")
             return
-        elif len(args) >= 4:
+        elif len(args) == 4:
             if update_obj_attr(args, all_objects, storage) == 1:
                 print("** no instance found **")
+        else:
+            print("** Too many argument for update **")
+
 
     # -------------------------------------------------------------------------
 
@@ -228,29 +240,32 @@ class HBNBCommand(cmd.Cmd):
                     self.do_all(f"{obj_class}")
 
                 else:
-                    print("** Invalid Method **")
+                    print("** Invalid syntax **")
                     return
-            else:
-                print("** class doesn't exist **")
-                return
 
     def count_instances(self, arg):
         """ retrieve the number of instances of a class: <class name>.count() """
-        if arg:
+        if arg and len(arg.split()) == 1:
             count = 0
             args = arg.split('.')
             obj_class = args[0]
             method = args[1]
-            if obj_class in classes and method == "count()":
-                all_object = storage.all()
-                for key, obj in all_object.items():
-                    if key.startswith(obj_class):
-                        count += 1
-                print(count)
+            if obj_class in classes:
+                if method == "count()":
+                    all_object = storage.all()
+                    for key, obj in all_object.items():
+                        if key.startswith(obj_class):
+                            count += 1
+                    print(count)
+            else:
+                print("** class doesn't exist **")
+        else:
+            print("** Too many argument for count **")
+
 
     def show_destroy_update_instances(self, arg):
         """ retrieve an instance based on its ID: <class name>.show(<id>) """
-        if arg:
+        if arg and len(arg.split()) == 1:
             args = arg.split('.')
             obj_class = args[0]
             method = args[1]
@@ -268,6 +283,13 @@ class HBNBCommand(cmd.Cmd):
                     attribute = attr[1]
                     value = attr[2]
                     self.do_update(f"{obj_class} {id} {attribute} {value}")
+                else:
+                    print("** Invalid syntax **")
+            else:
+                print("** class doesn't exist **")
+        else:
+            print("** Too many argument **")
+
 
 
 def run_interactive_mode():
