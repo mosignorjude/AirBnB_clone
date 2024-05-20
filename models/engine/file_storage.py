@@ -3,6 +3,7 @@
 This file defines the file storage system for the project.
 """
 import json
+from json.decoder import JSONDecodeError
 
 
 class FileStorage():
@@ -58,7 +59,7 @@ class FileStorage():
                     obj = eval(obj_dict["__class__"])(
                         **obj_dict)  # get class from its name
                     FileStorage.__objects[key] = obj  # Recreate class
-            except FileNotFoundError:
+            except (FileNotFoundError, JSONDecodeError):
                 pass
         else:
             pass
