@@ -116,20 +116,22 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             else:
-                print("*** instance id missing ***")
+                print("** instance id missing **")
                 return
         elif len(args) == 2:
             class_name = args[0]
             obj_id = args[1]
             class_key = f"{class_name}.{obj_id}"
-
-            if class_key in all_objects.keys():
-                del all_objects[class_key]
-                FileStorage.__objects = all_objects
-                storage.save()
+            if class_name in classes:
+                if class_key in all_objects.keys():
+                    del all_objects[class_key]
+                    FileStorage.__objects = all_objects
+                    storage.save()
+                else:
+                    print("** no instance found **")
+                    return
             else:
-                print("** no instance found **")
-                return
+                print("** class doesn't exist **")
         else:
             print("** Too many argument for destroy **")
             return
