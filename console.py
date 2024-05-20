@@ -201,6 +201,7 @@ class HBNBCommand(cmd.Cmd):
             update_obj_attr(args, all_objects, storage)
         else:
             print("** Too many argument for update **")
+            print(args)
 
     # -------------------------------------------------------------------------
 
@@ -270,7 +271,7 @@ class HBNBCommand(cmd.Cmd):
 
     def show_destroy_update_instances(self, arg):
         """ retrieve an instance based on its ID: <class name>.show(<id>) """
-        if arg and len(arg.split()) == 1:
+        if arg:
             args = arg.split('.')
             obj_class = args[0]
             method = args[1]
@@ -293,7 +294,7 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
         else:
-            print("** Too many argument **")
+            print("** me - Too many argument **")
 
 
 def run_interactive_mode():
