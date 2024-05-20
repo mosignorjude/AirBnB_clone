@@ -56,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
                     print("** class doesn't exist **")
                     return
             else:
-                print("** Too many argument for create **)
+                print("** Too many argument for create **")
                 return
         else:
             print("** class name missing **")
