@@ -41,17 +41,17 @@ class FileStorage():
             for key, obj in FileStorage.__objects.items():
                 json_data[key] = obj.to_dict()
 
-        with open(self.__file_path, 'w') as file:
+        with open(FileStorage.__file_path, 'w') as file:
             json.dump(json_data, file)
 
     def reload(self):
         """ Deserializes the JSON file """
 
-        if self.__file_path:
+        if FileStorage.__file_path:
             try:
                 from models.class_module import (BaseModel, User, Review,
                                                  State, City, Place, Amenity)
-                with open(self.__file_path, 'r') as file:
+                with open(FileStorage.__file_path, 'r') as file:
                     json_data = file.read()
                 dict_from_json = json.loads(json_data)
                 for key, obj_dict in dict_from_json.items():
