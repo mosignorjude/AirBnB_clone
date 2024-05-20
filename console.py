@@ -71,18 +71,18 @@ class HBNBCommand(cmd.Cmd):
              $ show BaseModel 1234-1234-1234
         """
         if not line_arg:
-            print("** class name missing ***")
+            print("** class name missing **")
             return
 
         all_objects = storage.all()
         args = line_arg.split()
+        if args[0] not in classes:
+            print("** class doesn't exist **")
+            return
         if len(args) < 2:
             class_name = args[0]
-            if class_name in classes:
-                print("** instance id missing **")
-                return
-            else:
-                print("*** class doesn't exist ***")
+            print("** instance id missing **")
+            return
         elif len(args) == 2:
             class_name = args[0]
             obj_id = args[1]
@@ -176,17 +176,16 @@ class HBNBCommand(cmd.Cmd):
             $ update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         if not line_arg:
-            print("** class name missing ***")
+            print("** class name missing **")
             return
         all_objects = storage.all()
         args = line_arg.split()
-        if len(args) < 2:
-            if not args[0] in classes:
-                print("** class doesn't exist **")
-                return
-            else:
-                print("** instance id missing **")
-                return
+        if args[0] not in classes:
+            print("** class doesn't exist **")
+            return
+        if len(args) == 2:
+            print("** instance id missing **")
+            return
         elif len(args) < 3:
             if check_object(args, all_objects) is True:
                 print("** attribute name missing **")
