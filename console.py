@@ -183,22 +183,20 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in classes:
             print("** class doesn't exist **")
             return
-        if len(args) == 2:
+        if check_object(args, all_objects) is False:
+            print("** no instance found **")
+            return
+        if len(args) == 1:
             print("** instance id missing **")
             return
-        elif len(args) < 3:
-            if check_object(args, all_objects) is True:
-                print("** attribute name missing **")
-                return
-            else:
-                print("** no instance found **")
-                return
-        elif len(args) < 4:
+        elif len(args) == 2:
+            print("** attribute name missing **")
+            return
+        elif len(args) == 3:
             print("** value missing **")
             return
         elif len(args) == 4:
-            if update_obj_attr(args, all_objects, storage) == 1:
-                print("** no instance found **")
+            update_obj_attr(args, all_objects, storage)
         else:
             print("** Too many argument for update **")
 
