@@ -208,7 +208,7 @@ class HBNBCommand(cmd.Cmd):
         """ overides the default method to handle unrecognised commands """
         if arg:
             args = arg.split('.')
-            if '.' in arg and args[0] in classes and args[1][-1:] == ")":
+            if '.' in arg and '(' in arg and args[0] in classes and args[1][-1:] == ")":
                 # if args[0] in classes and re.match(pattern, arg[1]):
                 return self.handle_unregistered_command(arg)
 
@@ -224,8 +224,11 @@ class HBNBCommand(cmd.Cmd):
                 self.all_instances(arg)
             elif method == "count()":
                 self.count_instances(arg)
-            elif method.startswith("show(") or method.startswith("destroy(") or method.startswith("update("):
+            elif (method.startswith("show(") or method.startswith("destroy(") or method.startswith("update(")) and method[-1:] == ')':
                 self.show_destroy_update_instances(arg)
+            else:
+                print("** Invalid syntax **")
+
 
     def all_instances(self, arg):
         """
