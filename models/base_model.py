@@ -3,7 +3,7 @@
     Other classes inherits from this Class.
 """
 import uuid
-import datetime
+from datetime import datetime
 from models import storage
 
 
@@ -21,14 +21,14 @@ class BaseModel():
             for key, value in kwargs.items():
                 if key != "__class__":
                     if key == "created_at" or key == "updated_at":
-                        parsed_time = datetime.datetime.fromisoformat(value)
+                        parsed_time = datetime.utcnow.fromisoformat(value)
                         setattr(self, key, parsed_time)
                     else:
                         setattr(self, key, value)
         else:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.datetime.now()
-            self.updated_at = datetime.datetime.now()
+            self.created_at = datetime.utcnow()
+            self.updated_at = datetime.utcnow()
             storage.new(self)
 
     def __str__(self):
@@ -39,7 +39,7 @@ class BaseModel():
         """ Updates the public instance attributes <updated_at>
         with current date and time
         """
-        self.updated_at = datetime.datetime.now()
+        self.updated_at = datetime.utcnow()
         storage.save()
 
     def to_dict(self):
