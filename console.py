@@ -112,7 +112,7 @@ class HBNBCommand(cmd.Cmd):
         all_objects = storage.all()
         args = line_arg.split()
         if len(args) < 2:
-            if check_class_name(args[0], all_objects) == False:
+            if check_class_name(args[0], all_objects) is False:
                 print("** class doesn't exist **")
                 return
             else:
@@ -150,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
             args = line_arg.split()
             if len(args) == 1:
                 class_name = args[0]
-                if not class_name in classes:
+                if class_name not in classes:
                     print("** class doesn't exist **")
                     return
                 for obj_key, obj in all_objects.items():
@@ -186,7 +186,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
                 return
         elif len(args) < 3:
-            if check_object(args, all_objects) == True:
+            if check_object(args, all_objects) is True:
                 print("** attribute name missing **")
                 return
             else:
@@ -201,14 +201,14 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** Too many argument for update **")
 
-
     # -------------------------------------------------------------------------
 
     def default(self, arg):
         """ overides the default method to handle unrecognised commands """
         if arg:
             args = arg.split('.')
-            if '.' in arg and '(' in arg and args[0] in classes and args[1][-1:] == ")":
+            if ('.' in arg and '(' in arg and args[0] in classes
+                    and args[1][-1:] == ")"):
                 # if args[0] in classes and re.match(pattern, arg[1]):
                 return self.handle_unregistered_command(arg)
 
@@ -224,11 +224,11 @@ class HBNBCommand(cmd.Cmd):
                 self.all_instances(arg)
             elif method == "count()":
                 self.count_instances(arg)
-            elif (method.startswith("show(") or method.startswith("destroy(") or method.startswith("update(")) and method[-1:] == ')':
+            elif ((method.startswith("show(") or method.startswith("destroy(")
+                   or method.startswith("update(")) and method[-1:] == ')'):
                 self.show_destroy_update_instances(arg)
             else:
                 print("** Invalid syntax **")
-
 
     def all_instances(self, arg):
         """
@@ -247,7 +247,9 @@ class HBNBCommand(cmd.Cmd):
                     return
 
     def count_instances(self, arg):
-        """ retrieve the number of instances of a class: <class name>.count() """
+        """ retrieve the number of instances of a class:
+            <class name>.count()
+        """
         if arg and len(arg.split()) == 1:
             count = 0
             args = arg.split('.')
@@ -264,7 +266,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
         else:
             print("** Too many argument for count **")
-
 
     def show_destroy_update_instances(self, arg):
         """ retrieve an instance based on its ID: <class name>.show(<id>) """
@@ -292,7 +293,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
         else:
             print("** Too many argument **")
-
 
 
 def run_interactive_mode():
