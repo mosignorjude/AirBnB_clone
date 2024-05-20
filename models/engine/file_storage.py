@@ -49,7 +49,8 @@ class FileStorage():
 
         if self.__file_path:
             try:
-                from models.class_module import BaseModel, User, Review, State, City, Place, Amenity
+                from models.class_module import (BaseModel, User, Review,
+                                                 State, City, Place, Amenity)
                 with open(self.__file_path, 'r') as file:
                     json_data = file.read()
                 dict_from_json = json.loads(json_data)
