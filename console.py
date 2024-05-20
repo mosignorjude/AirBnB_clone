@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         if args[0] not in classes:
             print("** class doesn't exist **")
             return
-        if check_class_name(args, all_objects) is False:
+        if check_object(args, all_objects) is False:
             print("** no instance found **")
             return
         if len(args) == 1:
