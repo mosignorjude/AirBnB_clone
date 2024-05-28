@@ -1,12 +1,4 @@
-/*Global style*/
-
 body {
- 		margin: 0;
-	 	padding: 0;
-		color: #484848;
-		font-size: 14px;
-		font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif; 
-}
-title {
-	background-attachment: fixed;
+	margin: 0;
+	padding: 0;
 }
